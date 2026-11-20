@@ -1,8 +1,8 @@
-# agent-toolkit
+# rapido-mcp
 
-Automation and agent tooling. Public repo.
+An MCP server that lets an AI agent search Rapido locations, estimate fares, book rides (bike taxi, auto, cab), track them and cancel them.
 
-Status: pre-idea. The project scope is being pinned down through a grilling interview; this README is updated once the spec lands.
+Status: pre-spec. The interface is being pinned down; see `docs/reviews/decision-log.md` for what is settled and why.
 
 ## Layout
 
@@ -18,3 +18,7 @@ Matt Pocock skills, configured by `/setup-matt-pocock-skills`:
 
 - `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement`
 - Issues live in GitHub Issues via `gh`.
+
+## The access question
+
+Rapido publishes no developer API, no OpenAPI spec and no SDK. See `docs/reviews/decision-log.md` for the routes considered and the terms-of-service finding that constrains this project.

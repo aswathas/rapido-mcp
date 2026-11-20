@@ -1,6 +1,6 @@
-# agent-toolkit
+# rapido-mcp
 
-Automation and agent tooling. Public repo.
+MCP server for Rapido rides. Public repo.
 
 ## Agent skills
 
