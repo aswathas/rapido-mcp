@@ -130,12 +130,15 @@ An entry is a path prefix, or a regular expression when wrapped in slashes. Excl
 
 ## The version on this machine
 
-Obsidian **1.8.4**, installed at `D:\Projects\Obsidian\Obsidian.exe`. Latest public release is **1.15.1**.
+Obsidian is installed at `D:\Projects\Obsidian\Obsidian.exe`. The installer is **1.8.4**, but the app package auto-updated itself to **1.15.1** on 2026-11-20. The version that matters is the running one.
 
-Two consequences of the version gap:
+Three consequences:
 
-- **The Obsidian CLI does not exist here.** It arrived in 1.12 and needs the 1.12.7+ installer, then `Settings → General → Command line interface`. It is the supported way for an agent to read and write a vault, so it is worth upgrading to when that matters. Until then, an agent edits Markdown files directly, which is exactly what this repo expects anyway.
-- **Bases is not available.** Bases (database views over properties, `.base` files) landed in 1.9. It is the natural way to make an index of project notes. Without it, use the property search `[status:open]` instead.
+- **The Obsidian CLI is still unverified.** It arrived in 1.12 and needs the 1.12.7+ installer, then `Settings → General → Command line interface`. The installer here is still 1.8.4. Until it is upgraded, an agent edits Markdown files directly, which is exactly what this repo expects anyway.
+- **Bases is available now.** Bases (database views over properties, `.base` files) landed in 1.9, and the running app has `bases` enabled in `core-plugins.json`. It is the natural way to make an index of project notes. Property search `[status:open]` still works and needs no plugin.
+- **The config file format moved.** Newer Obsidian writes `core-plugins.json` as an object map of booleans instead of an array of names, moves the font and title-bar settings from `appearance.json` into `app.json`, and writes the files without a trailing newline. The app rewrites these files on launch, so the committed format must match the running version. Otherwise the diff churns on every session.
+
+The rule for the agent: read the config, do not assume it. Obsidian rewrites what it owns.
 
 ## Obsidian is not required to work on this repo
 
