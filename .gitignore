@@ -8,3 +8,11 @@ __pycache__/
 .env.*
 !.env.example
 .DS_Store
+
+# Obsidian machine state. Configuration is committed; this is not.
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspace-*.json
+.obsidian/cache/
+.obsidian/plugins/*/data.json
+.trash/
