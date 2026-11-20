@@ -184,3 +184,41 @@ Every prompt that shaped this work, verbatim, in order.
 
 **Effect:** Obsidian 1.8.4 is installed at `D:\Projects\Obsidian\Obsidian.exe`; latest public release is 1.15.1. The Obsidian CLI needs the 1.12.7+ installer and is unavailable here. Bases needs 1.9 and is unavailable here. `.obsidian/app.json` keys confirmed against Obsidian's own help docs and the app bundle: `alwaysUpdateLinks`, `newLinkFormat`, `useMarkdownLinks`, `attachmentFolderPath`, `newFileLocation`, `newFileFolderPath`, `userIgnoreFilters`. Git guidance for `.obsidian/` confirmed against Obsidian's data-storage help page.
 
+---
+
+## P-013 — Brainstorm round 1, answered
+
+> Q: Where does the live Rapido client live, and does the public repo ship a mock backend?
+> A: One public repo, live client included, no mock
+>
+> Q: Where does a quote live between plan_ride and book_ride?
+> A: Others: first let me leran evyehting and open open the obsidan valult of our learning
+>
+> Q: Should auth state be visible to the model?
+> A: Others: do that
+>
+> Q: Does the server track order state locally?
+> A: Others: do that
+
+**Context:** Round 1 of the design frontier, asked as a four-question questionnaire right after the vault was built and opened.
+
+**Effect:** D-016 (one public repo with the live client, no mock backend), D-017 (`rapido_session_status` exposed), D-018 (stateless order handling). The quote-storage question was deliberately deferred by the user until the learning phase is done, so it stays open in `notes/project/open-questions.md`.
+
+---
+
+## P-014 — Detailed learning material with strong teaching methods
+
+> i want detailed learning material i want a you to teach me with worlds gretest teaching mehtids
+
+**Context:** The first teaching segment was delivered in chat. The user asked for depth that outlives the chat and for a proven method rather than a summary.
+
+**Effect:** D-019. The five reference notes gained a taught layer: `notes/learning/course.md` plus `notes/learning/modules/module-01` to `module-05`, each with a worked example, contrast cases, a misconception clinic, a runnable lab, five retrieval questions, an answer key, a Feynman check, flashcards and a spaced-repetition schedule. Module 06 is written after the grill settles the design.
+
+---
+
+## P-015 — Vault opened on this machine
+
+> (Not a user prompt. An action taken to serve P-014.)
+
+**Effect:** Obsidian had no registered vault. `%APPDATA%\obsidian\obsidian.json` was written with the `rapido-mcp` path, and the app was launched against it. Obsidian created `.obsidian/workspace.json`, which proves the vault loaded. The app auto-updated its asar from 1.8.4 to 1.15.1 on 2026-11-20, so Bases is likely available now; the CLI still needs the 1.12.7+ installer and stays unverified.
+

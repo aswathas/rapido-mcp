@@ -295,3 +295,99 @@ Every decision with real alternatives gets an entry here, oldest first. The prom
 **Prompt that produced this decision:**
 > Q: Keep the four HTML lessons, or replace them with vault notes?
 > A: Keep HTML lessons, add vault alongside
+
+---
+
+## D-016 — The live client ships in the public repo, and no mock backend ships
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** `rapido-mcp` holds the server and the live Rapido client in one public repo. No mock backend is shipped.
+
+**Alternatives considered:**
+- Sibling private repo for the live client, public repo shipping the server core plus a mock backend — recommended by the assistant, rejected by the user.
+- Live client inside the public repo behind a build flag — rejected by the user.
+- Public repo with the live client included and no mock backend — chosen.
+
+**Why:** The user chose one repository and full disclosure over a staged split. The repo is the product, so it carries the whole product.
+
+**Known tension, recorded not resolved:** Rapido's terms forbid automated programs that make multiple server requests per second, and there is no public developer API. See [What is verified about Rapido's API](../../notes/project/rapido-api-uncertainty.md). This decision reverses the publication half of D-010 and leaves the legal question open. It is an engineering choice, not a legal clearance. Without a mock backend, offline tests run against recorded fixtures, and the live probe stays the only component that can detect backend drift.
+
+**Prompt that produced this decision:**
+> Q: Where does the live Rapido client live, and does the public repo ship a mock backend?
+> A: One public repo, live client included, no mock
+
+---
+
+## D-017 — Auth state is visible to the model through one tool
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** The server exposes `rapido_session_status`. It returns whether the session is live and when it expires. It returns no user id, no phone number and no token material.
+
+**Alternatives considered:**
+- No session tool, with auth state outside the tool surface and errors carrying `AUTH_EXPIRED` — rejected. The model then discovers it is logged out by failing a call, which wastes a round trip and reads as a backend fault.
+- Full session details including the phone number — rejected. It would put personal data into the model's context.
+
+**Why:** The model needs to know whether to suggest logging in, and nothing more. A boolean plus an expiry answers that and leaks nothing.
+
+**Prompt that produced this decision:**
+> Q: Should auth state be visible to the model?
+> A: do that
+
+---
+
+## D-018 — The server holds no order state
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** Every call queries Rapido. `orderId` is the only handle the server keeps. There is no local order store.
+
+**Alternatives considered:**
+- A local order cache — rejected. It adds a database, a migration story and a second source of truth that can disagree with Rapido.
+- Hybrid, cache plus refresh on read — rejected. The cache adds complexity and buys nothing.
+
+**Why:** Rapido is the source of truth for order state. A stateless server has no migrations, no state to lose on restart and no reconciliation logic.
+
+**Prompt that produced this decision:**
+> Q: Does the server track order state locally?
+> A: do that
+
+---
+
+## D-019 — The learning material is a module course inside the vault
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** The five reference notes stay. A new `notes/learning/course.md` map plus `notes/learning/modules/module-01` to `module-06` carry the taught version. Every module has the same shape: why it matters, objectives, mental model, core content, worked example, contrast cases, misconception clinic, hands-on lab, retrieval practice, answer key, Feynman prompt, flashcards, spaced repetition, see also.
+
+**Alternatives considered:**
+- Keep only the reference notes and teach in chat — rejected. The teaching would not survive the session, and the vault would hold reference material only.
+- Keep the HTML lessons as the only teaching surface — rejected. An agent cannot shape them as easily as Markdown, and they are not queryable vault notes.
+
+**Why:** The user asked for detailed material taught with strong methods. A method is only reproducible if its shape is written down and every module obeys it.
+
+**Prompt that produced this decision:**
+> i want detailed learning material i want a you to teach me with worlds gretest teaching mehtids
+
+---
+
+## D-020 — The Obsidian config follows the running app version
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** The committed `.obsidian/` files use the format the running app writes. The app auto-updated its package from 1.8.4 to 1.15.1, so `core-plugins.json` is now an object map of plugin booleans, the font and title-bar settings live in `app.json` instead of `appearance.json`, and `bases` is enabled. Downloaded themes under `.obsidian/themes/` are ignored, both in git and in the vault's excluded-file list.
+
+**Alternatives considered:**
+- Keep the 1.8.4 format and let the app rewrite it on every launch — rejected. The app owns these files, and a format that disagrees with the app churns the diff every session.
+- Commit the downloaded theme CSS — rejected. It is about one megabyte of third-party assets that the app fetches for itself.
+
+**Why:** Configuration must match the tool that owns it, or the diff lies about what the vault actually runs.
+
+**Prompt that produced this decision:**
+> (Derived from the Obsidian upgrade observed while opening the vault. See P-015.)
