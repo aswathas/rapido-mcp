@@ -138,3 +138,49 @@ Every prompt that shaped this work, verbatim, in order.
 
 **Effect:** Repo renamed to `rapido-mcp`. Interface set to plain tools first with code mode deferred. Runtime set to Node 23 with TypeScript. Scope confirmed as rides only. The publication split deferred: build and test locally, keep the live client out of the public repo until the user has seen it work.
 
+---
+
+## P-009 — Obsidian as the working surface
+
+> use obsidian firwst eam until i say doen teach me create a obsidian vault in same repop of ours let em learnfirstg teach me about this from first then we can brainstrom then you can grill
+
+**Context:** Lesson 0004 had been written and committed, but the brainstorm had not happened. The user interrupted with a new instruction: use Obsidian, and build a vault in the same repo.
+
+**Effect:** Switched the workflow. Before doing anything else, taught the vault mechanics (lesson note `notes/learning/obsidian-vault.md`) and built the vault. The brainstorm is still pending; it runs after this.
+
+---
+
+## P-010 — Vault location, contents and lesson handling
+
+> Q: Where should the Obsidian vault live?
+> A: rapido-mcp repo (public on GitHub)
+
+> Q: What should the vault actually hold?
+> A: Both, in separate folders
+
+> Q: Keep the four HTML lessons, or replace them with vault notes?
+> A: Keep HTML lessons, add vault alongside
+
+**Effect:** D-011, D-012, D-015. The vault root is the repo root. `notes/project/` and `notes/learning/` are the two content folders. The HTML lessons are untouched.
+
+---
+
+## P-011 — Earlier brainstorm round, deferred
+
+> Q: Where should the live client live: a separate private repo, an unpublished branch in rapido-mcp, or published in rapido-mcp?
+> Q: Should quotes live server-side with an expiry, or travel as a signed blob the model carries?
+> Q: Should the server expose a session/auth-status tool, or keep auth state outside the tool surface?
+> Q: Should the server track order state locally, or stay stateless against Rapido?
+
+**Context:** Asked, then interrupted by the Obsidian instruction before the user answered.
+
+**Effect:** Recorded in `notes/project/open-questions.md` as round 1 of the design frontier, each with a recommended answer. Still open. These become D-numbers once the interview settles them.
+
+---
+
+## P-012 — Environment facts gathered for the vault
+
+> (Not a user prompt. Facts established by inspection, recorded here so the decisions above can be audited.)
+
+**Effect:** Obsidian 1.8.4 is installed at `D:\Projects\Obsidian\Obsidian.exe`; latest public release is 1.15.1. The Obsidian CLI needs the 1.12.7+ installer and is unavailable here. Bases needs 1.9 and is unavailable here. `.obsidian/app.json` keys confirmed against Obsidian's own help docs and the app bundle: `alwaysUpdateLinks`, `newLinkFormat`, `useMarkdownLinks`, `attachmentFolderPath`, `newFileLocation`, `newFileFolderPath`, `userIgnoreFilters`. Git guidance for `.obsidian/` confirmed against Obsidian's data-storage help page.
+

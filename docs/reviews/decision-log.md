@@ -199,3 +199,99 @@ Every decision with real alternatives gets an entry here, oldest first. The prom
 
 > Q: Does "all features" include food and parcel, or rides only?
 > A: Rides only for now: bike, auto, cab
+
+---
+
+## D-011 — The repo root is the Obsidian vault
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** The `rapido-mcp` repo root is an Obsidian vault. Every `.md` file tracked by git is a vault note. There is no separate notes repo and no second copy of anything. `CONTEXT.md`, `docs/adr/`, `README.md` and `AGENTS.md` are all notes.
+
+**Alternatives considered:**
+- A separate vault repo, with the project repo linking into it — rejected. Two repos means two histories, two remotes and a sync problem. A vault is just a folder of Markdown; a git repo already is one.
+- A `notes/` subfolder as the vault root, with the project outside it — rejected. Then `CONTEXT.md` and `docs/adr/` sit outside the link graph, and the notes cannot link to the records that justify them.
+- Keep the learning workspace at `C:\Users\ADMIN\projects\mcp-learning` and mirror notes into the repo — rejected. Mirroring means two sources of truth that drift.
+
+**Why:** Obsidian's vault is a plain folder. Its notes are plain `.md` files. Git already versions folders of Markdown. Making the repo root the vault means there is exactly one copy of every note, it renders on GitHub, and an agent can read and write it without Obsidian running at all.
+
+**Prompt that produced this decision:**
+> Q: Where should the Obsidian vault live?
+> A: rapido-mcp repo (public on GitHub)
+
+---
+
+## D-012 — The vault holds both project notes and learning notes, in separate folders
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** The vault carries two kinds of note in two folders: `notes/project/` for design notes that belong to this project, and `notes/learning/` for reference material that outlives it. `notes/Home.md` is the index.
+
+**Alternatives considered:**
+- Project notes only — rejected. The learning material is what makes the next design decision fast, and it was already written; it belongs somewhere durable.
+- Learning notes only — rejected. The project notes are the working surface for the design interview.
+- One flat `notes/` folder — rejected. Project decisions and general reference have different lifetimes and different readers; separating them makes both findable.
+
+**Why:** The learning material was written in a separate workspace at `C:\Users\ADMIN\projects\mcp-learning` as HTML lessons. Those lessons stay, because they are a teaching artefact with quizzes and styled typography. The vault gets the condensed, versioned reference form of the same material. That is the difference between a lesson and a reference, and the reference is what a future reader — human or agent — needs.
+
+**Prompt that produced this decision:**
+> Q: What should the vault actually hold?
+> A: Both, in separate folders
+
+---
+
+## D-013 — Markdown links, not wikilinks
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** Notes use Markdown links, not `[[wikilinks]]`. Obsidian is configured with `"useMarkdownLinks": true` and `"newLinkFormat": "relative"`.
+
+**Alternatives considered:**
+- Wikilinks — rejected. Obsidian renders them; GitHub does not. This repo is public and read on GitHub, so wikilinks would show as broken text to every reader without the app. The link graph still works, because Obsidian reads Markdown links.
+- Absolute vault-root paths — rejected. Relative paths survive a note being moved, and they are what GitHub resolves.
+
+**Why:** The vault must work in two readers: the Obsidian app and GitHub. Markdown links are the only format both render. The cost is that spaces must be percent-encoded as `%20` and the paths must be correct by hand, which is a real cost but a visible one.
+
+**Prompt that produced this decision:**
+> (Derived from the vault-location decision. The user chose a public GitHub vault; a public vault that renders as broken link text on GitHub would not be a working public vault.)
+
+---
+
+## D-014 — Commit Obsidian configuration, ignore Obsidian machine state
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** `.obsidian/app.json`, `appearance.json`, `core-plugins.json`, `community-plugins.json`, `hotkeys.json`, `graph.json` and `templates.json` are committed. `.obsidian/workspace.json`, `workspace-mobile.json`, `workspace-*.json`, `cache/`, `plugins/*/data.json` and `.trash/` are ignored.
+
+**Alternatives considered:**
+- Ignore the whole `.obsidian/` folder — rejected. Then a fresh clone has no settings: no excluded-files list, no template folder, no core plugin set. The vault would behave differently on every machine.
+- Commit everything, including `workspace.json` — rejected. Obsidian rewrites `workspace.json` on every window change. It would churn the diff on every single session and conflict constantly.
+- Commit plugin `data.json` files — rejected. Per-machine plugin state, same churn problem, and a plugin's data file can hold arbitrary local state.
+
+**Why:** The split is configuration versus machine state. Configuration describes the vault and is identical everywhere. Machine state describes the current window and is not.
+
+**Prompt that produced this decision:**
+> (Derived from the vault-location decision and the git-hygiene requirement. Committing a vault to a public repo means the diff must stay readable.)
+
+---
+
+## D-015 — The HTML lessons stay; the vault is the working surface
+
+**Date:** 2026-11-20
+**Decided by:** Aswath, via MiniMax Code
+
+**Decision:** The four HTML lessons in `C:\Users\ADMIN\projects\mcp-learning\lessons/` are kept unchanged. The vault is added alongside them. The lessons teach; the vault notes are the reference.
+
+**Alternatives considered:**
+- Replace the lessons with vault notes — rejected by the user. The lessons carry a teaching purpose the notes do not: styled typography, diagrams, quizzes with immediate feedback, and a spaced path through the material. Converting them to plain Markdown would throw that away.
+- Delete the learning workspace entirely once the vault exists — rejected. The lessons are the artefact that proved the material was understood, and the quiz answers become evidence for the learning records.
+
+**Why:** A lesson and a reference have different shapes. The lesson is paced and interactive. The reference is dense and complete. Keeping both costs one duplicated idea per topic and buys two different uses.
+
+**Prompt that produced this decision:**
+> Q: Keep the four HTML lessons, or replace them with vault notes?
+> A: Keep HTML lessons, add vault alongside
