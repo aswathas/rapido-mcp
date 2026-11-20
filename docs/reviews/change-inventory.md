@@ -1,0 +1,17 @@
+# Change inventory
+
+Every changed file gets exactly one row: what changed, why, how it was verified.
+
+| File | What changed | Why | How verified |
+|---|---|---|---|
+| `AGENTS.md` | Created with the `## Agent skills` block (issue tracker, triage labels, domain docs) and a one-line repo description. | The setup skill requires the file that carries the skill routing for every other skill in the repo. User chose `AGENTS.md` over `CLAUDE.md` (D-004). | Read back after write; contents match the three `docs/agents/*.md` files it references. |
+| `README.md` | Created. States the repo purpose, the layout, and the Matt Pocock workflow chain. | A public repo needs a README; the layout section tells an agent where the domain docs live. | Read back after write. |
+| `.gitignore` | Created. Ignores `node_modules/`, `dist/`, `build/`, `.venv/`, `__pycache__/`, `*.pyc`, `.env`, `.env.*` (keeps `.env.example`), `.DS_Store`. | Language-agnostic ignore list for an automation/agent-tooling project; runtime and tooling choice is still open. | Read back after write; `git status -s` shows no ignored file staged. |
+| `docs/agents/issue-tracker.md` | Created from the setup skill's GitHub template. Tracker = GitHub Issues via `gh`; PRs-as-request-surface flag set to `no`. | `/to-spec`, `/to-tickets` and `/triage` read this to know where issues live. User chose GitHub Issues (D-002). | Read back after write; matches the upstream template verbatim, with only the tracker choice applied. |
+| `docs/agents/triage-labels.md` | Created from the setup skill's template. Five canonical roles mapped to identical label strings. | `/triage` applies labels from this table. User kept the defaults (D-003). | Read back after write; all five default labels present. |
+| `docs/agents/domain.md` | Created from the setup skill's template. Single-context layout: root `CONTEXT.md` plus `docs/adr/`. | `/domain-modeling` and `/grill-with-docs` write domain docs; the layout must be fixed before they do. No monorepo signals, so single-context is the default (D-002 setup). | Read back after write; layout section names `CONTEXT.md` and `docs/adr/`, and `CONTEXT-MAP.md` is marked as the multi-context trigger. |
+| `docs/reviews/decision-log.md` | Created with five entries (D-001 to D-005), each with alternatives, rationale and the prompt that produced it. | Commit discipline requires every decision with real alternatives to be written down with its prompt. | Read back after write; five entries, each naming its prompt. |
+| `docs/reviews/change-inventory.md` | Created. This file. | Commit discipline requires one row per changed file. | Read back after write. |
+| `docs/reviews/prompts.md` | Created. Verbatim prompt trail for this session. | Commit discipline requires every prompt that shaped the work to be recorded. | Read back after write; prompts match the session transcript. |
+| `BUILDLOG.md` | Created. Build log for the repo. | Commit discipline requires a build log beside the docs tree. | Read back after write. |
+| `.gitattributes` | Created. `* text=auto eol=lf`, with CRLF forced for `.ps1`/`.bat`/`.cmd` and `binary` for common binary assets. | Git reported "LF will be replaced by CRLF" on every staged file, so line endings were not pinned. LF in the repository, native CRLF in the Windows working tree, keeps diffs clean across machines. | `git add` no longer emits the LF/CRLF warning; `git ls-files --eol` reports `i/lf` and `w/lf` for tracked text files. |
