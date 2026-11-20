@@ -15,4 +15,5 @@ __pycache__/
 .obsidian/workspace-*.json
 .obsidian/cache/
 .obsidian/plugins/*/data.json
+.obsidian/themes/
 .trash/

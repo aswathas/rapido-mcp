@@ -1,14 +1,11 @@
 {
   "accentColor": "",
-  "theme": "system",
+  "theme": "moonstone",
   "baseFontSize": 16,
-  "cssTheme": "",
+  "cssTheme": "Typewriter",
   "enabledCssSnippets": [],
-  "fontInterface": "Inter",
-  "fontText": "Inter",
-  "fontMonospace": "JetBrains Mono",
   "translucency": false,
   "nativeMenus": true,
-  "nativeTitleBar": false,
-  "showViewHeader": true
+  "showViewHeader": true,
+  "showRibbon": true
 }
